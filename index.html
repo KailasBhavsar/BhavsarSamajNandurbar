@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,52 +9,63 @@
         body {
             background: linear-gradient(to bottom, #ffffe0, #fff8dc);
             text-align: center;
-            padding: 0px;
+            padding: 0;
             font-family: 'Arial', sans-serif;
-            padding-bottom: 10px; /* Adjust this value based on your reduced footer height */
+            padding-bottom: 5px;
+        }
+
+        header {
+            background: linear-gradient(to bottom, #ecfd54, #f5f1b7);
+            color: black;
+            padding: 1px;
+            text-align: center;
         }
 
         h1 {
-            color: #001f3f;
-            font-size: 48px;
-            margin-bottom: 10px;
+            font-size: 40px;
+            margin: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            color: #001f3f;
-            font-size: 32px;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            margin-top: -20px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
         }
-
+        h5 {
+            font-size: 10px;
+            margin-top: -15px;
+            text-align: right ;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
         .logo-container {
             position: relative;
-            margin-top: 20px; /* Add margin to the top for spacing */
+            margin-top: 10px;
         }
 
-        .logo, .mata-image {
-            width: 130px;
-            height: 130px;
+        .logo,
+        .mata-image {
+            width: 70px;
+            height: 70px;
             border-radius: 10%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             position: absolute;
-            top: 0;
+            top: 5%;
         }
 
         .logo {
-            left: 5%;
+            left: 10%;
             transform: translateX(-50%);
         }
 
         .mata-image {
-            right: 5%;
+            right: 10%;
             transform: translateX(50%);
         }
 
         .button-container {
             text-align: left;
-            margin-top: 20px;
+            margin-top: 10px;
             list-style: none;
             padding: 0;
         }
@@ -62,14 +74,14 @@
             background-color: #001f3f;
             color: white;
             border: none;
-            padding: 10px 15px;
-            margin-bottom: 5px;
+            padding: 5px 5px;
+            margin-bottom: 10px;
             cursor: pointer;
             display: block;
             width: 100%;
             text-align: left;
             transition: background-color 0.3s;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         .number-button:hover {
@@ -77,21 +89,21 @@
         }
 
         .sub-buttons-container {
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .sub-number-button {
             background-color: #bfc2bc;
             color: black;
             border: black;
-            padding: 5px 10px;
-            margin-bottom: 5px;
+            padding: 8px 16px;
+            margin-bottom: 8px;
             cursor: pointer;
             display: block;
             width: 100%;
             text-align: left;
             transition: background-color 0.3s;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         .sub-number-button:hover {
@@ -100,19 +112,20 @@
 
         .chart-container {
             display: none;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             border-bottom: 1px solid #000000;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
         }
 
@@ -131,77 +144,84 @@
             bottom: 0;
             width: 100%;
             background-color: rgb(248, 248, 246);
-            padding: 5px 0; /* Adjust this value based on your reduced footer height */
+            padding: 0px 0;
             align-items: center;
             white-space: nowrap;
             overflow: hidden;
-            line-height: 0; /* Adjust this value based on your reduced footer height */
+            line-height: 0;
         }
-        
+
         footer p {
-            animation: marquee 10s linear infinite; /* Animation for scrolling */
+            animation: marquee 10s linear infinite;
         }
-        
+
         @keyframes marquee {
             from {
                 transform: translateX(100%);
             }
+
             to {
                 transform: translateX(-100%);
             }
         }
 
-        /* Media query for smaller screens */
         @media (max-width: 600px) {
             h1 {
-                font-size: 36px;
+                font-size: 30px;
             }
 
             h2 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
-            .logo, .mata-image {
-                width: 65px;
-                height: 65px;
-                top: 0.6cm;
-                margin: 3%;
+            .logo,
+            .mata-image {
+                width: 70px;
+                height: 70px;
+                top: 5%;
+                margin: 1%;
             }
 
-            .number-button, .sub-number-button {
+            .number-button,
+            .sub-number-button {
                 font-size: 14px;
                 padding: 8px 12px;
             }
+
             footer {
                 position: fixed;
                 bottom: 0;
                 width: 100%;
                 background-color: rgb(248, 248, 246);
-                /* Transparent background with the same color as the body */
-                padding: 10px 0;
+                padding: 0px ;
                 align-items: center;
             }
 
             .logo-container {
-                margin-top: 10px; /* Adjust margin for spacing */
+                margin-top: 0px;
             }
         }
     </style>
 </head>
+
 <body>
-    <!-- Logo and Mata Image Container -->
-    <div class="logo-container">
-        <!-- Square Logo -->
-        <img src="logo.png" alt="Logo" class="logo">
-        <!-- Mata Image -->
-        <img src="mata.jpg" alt="Mata Image" class="mata-image">
-    </div>
+    <header>
+        <!-- Logo and Mata Image Container -->
+        <div class="logo-container">
+            <!-- Square Logo -->
+            <img src="logo.png" alt="Logo" class="logo">
+            <!-- Mata Image -->
+            <img src="mata.jpg" alt="Mata Image" class="mata-image">
+        </div>
 
-    <!-- Main Title -->
-    <h1>BHAVSAR SAMAJ<br> NANDURBAR</h1>
-
-    <!-- Subheading -->
-    <h2>Bhavsar Samaj Bahuddeshiy Sansthha</h2>
+        <!-- Main Title -->
+        <h4>BHAVSAR SAMAJ NANDURBAR</h4>
+        <h1>KHANESUMARI</h1>
+        <h4>Presented by-</h4>
+        <!-- Subheading -->
+        <h2>Bhavsar Samaj Bahuddeshiy Sansthha</h2>
+        <h5>(Reg. No : F- 21447)</h5>
+    </header>
 
     <ul class="button-container" id="buttonContainer"></ul>
 
@@ -211,6 +231,8 @@
     </footer>
 
     <script>
+
+
         var lastClickedSubButton = null;
 
         // Function to generate buttons dynamically from CSV data
