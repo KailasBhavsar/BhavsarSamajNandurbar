@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NANDURBAR BHAVSAR SAMAJ</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #ffffe0, #fff8dc);
+            text-align: center;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            padding-bottom: 10px; /* Adjust this value based on your reduced footer height */
+        }
+
+        h1 {
+            color: #001f3f;
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #001f3f;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            position: relative;
+            margin-top: 20px; /* Add margin to the top for spacing */
+        }
+
+        .logo, .mata-image {
+            width: 130px;
+            height: 130px;
+            border-radius: 10%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 0;
+        }
+
+        .logo {
+            left: 5%;
+            transform: translateX(-50%);
+        }
+
+        .mata-image {
+            right: 5%;
+            transform: translateX(50%);
+        }
+
+        .button-container {
+            text-align: left;
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .number-button {
+            background-color: #001f3f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .number-button:hover {
+            background-color: #001a35;
+        }
+
+        .sub-buttons-container {
+            margin-top: 10px;
+        }
+
+        .sub-number-button {
+            background-color: #bfc2bc;
+            color: black;
+            border: black;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .sub-number-button:hover {
+            background-color: #949397;
+        }
+
+        .chart-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border-bottom: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            width: 30%;
+            border-right: 1px solid #ddd;
+            background-color: #f2f2f2;
+        }
+
+        td {
+            width: 70%;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgb(248, 248, 246);
+            padding: 5px 0; /* Adjust this value based on your reduced footer height */
+            align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            line-height: 0; /* Adjust this value based on your reduced footer height */
+        }
+        
+        footer p {
+            animation: marquee 10s linear infinite; /* Animation for scrolling */
+        }
+        
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .logo, .mata-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .number-button, .sub-number-button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background-color: rgb(248, 248, 246);
+                /* Transparent background with the same color as the body */
+                padding: 10px 0;
+                align-items: center;
+            }
+
+            .logo-container {
+                margin-top: 10px; /* Adjust margin for spacing */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo and Mata Image Container -->
+    <div class="logo-container">
+        <!-- Square Logo -->
+        <img src="logo.png" alt="Logo" class="logo">
+        <!-- Mata Image -->
+        <img src="mata.jpg" alt="Mata Image" class="mata-image">
+    </div>
+
+    <!-- Main Title -->
+    <h1>NANDURBAR BHAVSAR SAMAJ</h1>
+
+    <!-- Subheading -->
+    <h2>Bhavsar Samaj Bahuddeshiy Sansthha</h2>
+
+    <ul class="button-container" id="buttonContainer"></ul>
+
+    <div class="chart-container" id="chartContainer"></div>
+    <footer>
+        <p>To add your information contact: Kailas Sharadchandra Bhavsar (8411850864)</p>
+    </footer>
+
+    <script>
+        var lastClickedSubButton = null;
+
+        // Function to generate buttons dynamically from CSV data
+        function generateButtonsFromCSV(csvData) {
+            var buttonContainer = document.getElementById('buttonContainer');
+            var rows = csvData.split('\n');
+            var mainButtonMap = new Map();
+
+            rows.forEach(function(row, index) {
+                if (index === 0) {
+                    // Skip the header row
+                    return;
+                }
+
+                var columns = row.split(',');
+                var mainButtonName = columns[0];
+                var subButtonName = columns[1];
+
+                if (!mainButtonMap.has(mainButtonName)) {
+                    mainButtonMap.set(mainButtonName, []);
+                }
+
+                mainButtonMap.get(mainButtonName).push(subButtonName);
+            });
+
+            mainButtonMap.forEach(function(subButtons, mainButtonName) {
+                var listItem = document.createElement('li');
+                var button = document.createElement('button');
+                button.className = 'number-button';
+                button.innerHTML = mainButtonName;
+                button.addEventListener('click', function() {
+                    toggleSubButtons(this, subButtons);
+                });
+
+                listItem.appendChild(button);
+                buttonContainer.appendChild(listItem);
+            });
+        }
+
+        function toggleSubButtons(clickedButton, subButtons) {
+            var subButtonsContainer = clickedButton.nextElementSibling;
+
+            // Show or hide the sub-buttons container
+            if (!subButtonsContainer) {
+                // Create sub-buttons container
+                subButtonsContainer = document.createElement('div');
+                subButtonsContainer.className = 'sub-buttons-container';
+
+                // Create sub-buttons
+                subButtons.forEach(function(subButton) {
+                    var subButtonElement = document.createElement('button');
+                    subButtonElement.className = 'sub-number-button';
+                    subButtonElement.innerHTML = subButton;
+                    subButtonElement.addEventListener('click', function() {
+                        toggleChart(this, subButton);
+                    });
+                    subButtonsContainer.appendChild(subButtonElement);
+                });
+
+                // Append sub-buttons container below the clicked button
+                clickedButton.parentNode.appendChild(subButtonsContainer);
+            } else {
+                // Toggle the display of sub-buttons
+                subButtonsContainer.style.display = subButtonsContainer.style.display === 'none' ? 'block' : 'none';
+
+                // Hide the chart when hiding sub-buttons
+                if (subButtonsContainer.style.display === 'none') {
+                    hideChart();
+                } else {
+                    // Hide other sub-buttons when displaying sub-buttons
+                    var allSubButtons = document.querySelectorAll('.sub-number-button');
+                    allSubButtons.forEach(function(subButton) {
+                        subButton.style.display = 'block';
+                    });
+                }
+            }
+
+            // Show or hide other main buttons
+            var mainButtons = document.querySelectorAll('.number-button');
+            mainButtons.forEach(function(mainButton) {
+                if (mainButton !== clickedButton) {
+                    mainButton.style.display = mainButton.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+
+            // Update the last clicked sub-button
+            lastClickedSubButton = (subButtonsContainer.style.display === 'block') ? clickedButton : null;
+        }
+
+        function toggleChart(clickedSubButton, subButtonName) {
+            var chartContainer = document.getElementById('chartContainer');
+
+            // Toggle the display of the chart container
+            chartContainer.style.display = chartContainer.style.display === 'none' ? 'block' : 'none';
+
+            // Hide other sub-buttons when displaying a chart
+            var allSubButtons = document.querySelectorAll('.sub-number-button');
+            allSubButtons.forEach(function(subButton) {
+                if (subButton !== clickedSubButton) {
+                    subButton.style.display = 'none';
+                }
+            });
+
+            // Hide the chart when toggling
+            if (chartContainer.style.display === 'none') {
+                // Show all sub-buttons when hiding the chart
+                allSubButtons.forEach(function(subButton) {
+                    subButton.style.display = 'block';
+                });
+            } else {
+                // Show the chart with data associated with the clicked sub-button
+                showChartWithData(subButtonName);
+            }
+        }
+
+        function showChartWithData(subButtonName) {
+            var chartContainer = document.getElementById('chartContainer');
+
+            // Fetch data for the clicked sub-button from CSV
+            fetchDataForSubButton(subButtonName)
+                .then(data => {
+                    // Create a table with the specified columns and rows
+                    var table = document.createElement('table');
+                    var dataHtml = '';
+
+                    for (var key in data) {
+                        // Exclude MainButtonName and SubButtonName from the displayed chart
+                        if (key !== 'MainButtonName' && key !== 'SubButtonName') {
+                            dataHtml += `
+                                <tr>
+                                    <th>${key}</th>
+                                    <td>${data[key]}</td>
+                                </tr>`;
+                        }
+                    }
+
+                    table.innerHTML = dataHtml;
+
+                    // Append the table to the chart container
+                    chartContainer.innerHTML = '';
+                    chartContainer.appendChild(table);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function hideChart() {
+            var chartContainer = document.getElementById('chartContainer');
+            // Hide the chart container
+            chartContainer.style.display = 'none';
+
+            // Show all sub-buttons when hiding the chart
+            var allSubButtons = document.querySelectorAll('.sub-number-button');
+            allSubButtons.forEach(function(subButton) {
+                subButton.style.display = 'block';
+            });
+
+            // Show the last clicked sub-button if exists
+            if (lastClickedSubButton) {
+                lastClickedSubButton.style.display = 'block';
+            }
+        }
+
+        // Function to fetch data for a specific sub-button from CSV
+        function fetchDataForSubButton(subButtonName) {
+            // Replace this with your actual CSV file path
+            var csvFilePath = 'generated_data.csv';
+
+            // Fetch CSV data using a fetch API
+            return fetch(csvFilePath)
+                .then(response => response.text())
+                .then(csvData => {
+                    var rows = csvData.split('\n');
+                    var header = rows[0].split(',');
+                    var dataIndex = header.indexOf('SubButtonName');
+
+                    for (var i = 1; rows.length && i < rows.length; i++) {
+                        var columns = rows[i].split(',');
+                        if (columns[dataIndex] === subButtonName) {
+                            var rowData = {};
+                            for (var j = 0; j < header.length; j++) {
+                                rowData[header[j]] = columns[j];
+                            }
+                            return rowData;
+                        }
+                    }
+
+                    return null; // Sub-button not found
+                })
+                .catch(error => {
+                    console.error('Error fetching CSV data:', error);
+                });
+        }
+
+        // Call the function to fetch CSV data and generate buttons
+        fetchDataAndGenerateButtons();
+
+        function fetchDataAndGenerateButtons() {
+            // Replace this with your actual CSV file path
+            var csvFilePath = 'generated_data.csv';
+
+            // Fetch CSV data using a fetch API
+            fetch(csvFilePath)
+                .then(response => response.text())
+                .then(csvData => {
+                    generateButtonsFromCSV(csvData);
+                })
+                .catch(error => {
+                    console.error('Error fetching CSV data:', error);
+                });
+        }
+    </script>
+</body>
+</html>
