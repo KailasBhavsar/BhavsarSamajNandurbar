@@ -234,93 +234,110 @@
 
 
         var lastClickedSubButton = null;
+var mainButtonNumberMap = new Map(); // Map to store main button names and their numbers
 
-        // Function to generate buttons dynamically from CSV data
-        function generateButtonsFromCSV(csvData) {
-            var buttonContainer = document.getElementById('buttonContainer');
-            var rows = csvData.split('\n');
-            var mainButtonMap = new Map();
+// Function to generate buttons dynamically from CSV data
+function generateButtonsFromCSV(csvData) {
+    var buttonContainer = document.getElementById('buttonContainer');
+    var rows = csvData.split('\n');
+    var mainButtonMap = new Map(); // Map to store main button names and their sub buttons
 
-            rows.forEach(function(row, index) {
-                if (index === 0) {
-                    // Skip the header row
-                    return;
-                }
-
-                var columns = row.split(',');
-                var mainButtonName = columns[0];
-                var subButtonName = columns[1];
-
-                if (!mainButtonMap.has(mainButtonName)) {
-                    mainButtonMap.set(mainButtonName, []);
-                }
-
-                mainButtonMap.get(mainButtonName).push(subButtonName);
-            });
-
-            mainButtonMap.forEach(function(subButtons, mainButtonName) {
-                var listItem = document.createElement('li');
-                var button = document.createElement('button');
-                button.className = 'number-button';
-                button.innerHTML = mainButtonName;
-                button.addEventListener('click', function() {
-                    toggleSubButtons(this, subButtons);
-                });
-
-                listItem.appendChild(button);
-                buttonContainer.appendChild(listItem);
-            });
+    rows.forEach(function(row, index) {
+        if (index === 0) {
+            // Skip the header row
+            return;
         }
 
-        function toggleSubButtons(clickedButton, subButtons) {
-            var subButtonsContainer = clickedButton.nextElementSibling;
+        var columns = row.split(',');
+        var mainButtonName = columns[0];
+        var subButtonName = columns[1];
 
-            // Show or hide the sub-buttons container
-            if (!subButtonsContainer) {
-                // Create sub-buttons container
-                subButtonsContainer = document.createElement('div');
-                subButtonsContainer.className = 'sub-buttons-container';
-
-                // Create sub-buttons
-                subButtons.forEach(function(subButton) {
-                    var subButtonElement = document.createElement('button');
-                    subButtonElement.className = 'sub-number-button';
-                    subButtonElement.innerHTML = subButton;
-                    subButtonElement.addEventListener('click', function() {
-                        toggleChart(this, subButton);
-                    });
-                    subButtonsContainer.appendChild(subButtonElement);
-                });
-
-                // Append sub-buttons container below the clicked button
-                clickedButton.parentNode.appendChild(subButtonsContainer);
-            } else {
-                // Toggle the display of sub-buttons
-                subButtonsContainer.style.display = subButtonsContainer.style.display === 'none' ? 'block' : 'none';
-
-                // Hide the chart when hiding sub-buttons
-                if (subButtonsContainer.style.display === 'none') {
-                    hideChart();
-                } else {
-                    // Hide other sub-buttons when displaying sub-buttons
-                    var allSubButtons = document.querySelectorAll('.sub-number-button');
-                    allSubButtons.forEach(function(subButton) {
-                        subButton.style.display = 'block';
-                    });
-                }
-            }
-
-            // Show or hide other main buttons
-            var mainButtons = document.querySelectorAll('.number-button');
-            mainButtons.forEach(function(mainButton) {
-                if (mainButton !== clickedButton) {
-                    mainButton.style.display = mainButton.style.display === 'none' ? 'block' : 'none';
-                }
-            });
-
-            // Update the last clicked sub-button
-            lastClickedSubButton = (subButtonsContainer.style.display === 'block') ? clickedButton : null;
+        if (!mainButtonMap.has(mainButtonName)) {
+            mainButtonMap.set(mainButtonName, []);
         }
+
+        mainButtonMap.get(mainButtonName).push(subButtonName);
+    });
+
+    mainButtonMap.forEach(function(subButtons, mainButtonName) {
+        var listItem = document.createElement('li');
+        var button = document.createElement('button');
+        var mainButtonNumber = getMainButtonNumber(mainButtonName); // Get or assign a number
+        button.className = 'number-button';
+        button.innerHTML = mainButtonNumber + '. ' + mainButtonName; // Add numbering
+        button.addEventListener('click', function() {
+            toggleSubButtons(this, subButtons);
+        });
+
+        listItem.appendChild(button);
+        buttonContainer.appendChild(listItem);
+    });
+}
+
+function getMainButtonNumber(mainButtonName) {
+    // Check if the main button is already assigned a number
+    if (mainButtonNumberMap.has(mainButtonName)) {
+        return mainButtonNumberMap.get(mainButtonName);
+    } else {
+        // Assign a new number and store in the map
+        var newNumber = mainButtonNumberMap.size + 1;
+        mainButtonNumberMap.set(mainButtonName, newNumber);
+        return newNumber;
+    }
+}
+
+function toggleSubButtons(clickedButton, subButtons) {
+    var subButtonsContainer = clickedButton.nextElementSibling;
+
+    // Show or hide the sub-buttons container
+    if (!subButtonsContainer) {
+        // Create sub-buttons container
+        subButtonsContainer = document.createElement('div');
+        subButtonsContainer.className = 'sub-buttons-container';
+
+        // Create sub-buttons
+        subButtons.forEach(function(subButton) {
+            var subButtonElement = document.createElement('button');
+            subButtonElement.className = 'sub-number-button';
+            subButtonElement.innerHTML = subButton;
+            subButtonElement.addEventListener('click', function() {
+                toggleChart(this, subButton);
+            });
+            subButtonsContainer.appendChild(subButtonElement);
+        });
+
+        // Append sub-buttons container below the clicked button
+        clickedButton.parentNode.appendChild(subButtonsContainer);
+    } else {
+        // Toggle the display of sub-buttons
+        subButtonsContainer.style.display = subButtonsContainer.style.display === 'none' ? 'block' : 'none';
+
+        // Hide the chart when hiding sub-buttons
+        if (subButtonsContainer.style.display === 'none') {
+            hideChart();
+        } else {
+            // Hide other sub-buttons when displaying sub-buttons
+            var allSubButtons = document.querySelectorAll('.sub-number-button');
+            allSubButtons.forEach(function(subButton) {
+                subButton.style.display = 'block';
+            });
+        }
+    }
+
+    // Show or hide other main buttons
+    var mainButtons = document.querySelectorAll('.number-button');
+    mainButtons.forEach(function(mainButton) {
+        if (mainButton !== clickedButton) {
+            mainButton.style.display = mainButton.style.display === 'none' ? 'block' : 'none';
+        }
+    });
+
+    // Update the last clicked sub-button
+    lastClickedSubButton = (subButtonsContainer.style.display === 'block') ? clickedButton : null;
+}
+
+// Rest of your code remains unchanged...
+
 
         function toggleChart(clickedSubButton, subButtonName) {
             var chartContainer = document.getElementById('chartContainer');
