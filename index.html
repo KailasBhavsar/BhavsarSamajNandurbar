@@ -12,6 +12,7 @@
             padding: 0;
             font-family: 'Arial', sans-serif;
             padding-bottom: 5px;
+            user-select: none;
         }
 
         header {
@@ -154,6 +155,12 @@
         footer p {
             animation: marquee 10s linear infinite;
         }
+        
+        button {
+            width: 18%; /* Adjust the width of the button as needed */
+            padding: 8px; /* Adjust the padding as needed */
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
 
         @keyframes marquee {
             from {
@@ -204,7 +211,7 @@
     </style>
 </head>
 
-<body>
+<body oncontextmenu="return false">
     <header>
         <!-- Logo and Mata Image Container -->
         <div class="logo-container">
@@ -222,7 +229,8 @@
         <h2>Bhavsar Samaj Bahuddeshiy Sansthha</h2>
         <h5>(Reg. No : F- 21447)</h5>
     </header>
-
+   
+    
     <ul class="button-container" id="buttonContainer"></ul>
 
     <div class="chart-container" id="chartContainer"></div>
@@ -231,7 +239,23 @@
     </footer>
 
     <script>
-
+        function searchMainButtons() {
+            var input, filter, ul, li, button, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById('buttonContainer');
+            li = ul.getElementsByTagName('li');
+    
+            for (i = 0; i < li.length; i++) {
+                button = li[i].getElementsByTagName('button')[0];
+                txtValue = button.textContent || button.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = '';
+                } else {
+                    li[i].style.display = 'none';
+                }
+            }
+        }
 
         var lastClickedSubButton = null;
 var mainButtonNumberMap = new Map(); // Map to store main button names and their numbers
